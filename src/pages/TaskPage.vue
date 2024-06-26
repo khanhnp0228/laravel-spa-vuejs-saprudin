@@ -76,10 +76,16 @@
     </main>
 </template>
 
-<script>
-export default {
-    name: "TaskPage.vue"
-}
+<script setup>
+import api from "../http/api";
+import { allTasks } from "../http/task-api";
+
+import {onMounted} from "vue";
+
+onMounted(async () => {
+    const {data} = await allTasks()
+    console.log(data)
+})
 </script>
 
 <style scoped>
