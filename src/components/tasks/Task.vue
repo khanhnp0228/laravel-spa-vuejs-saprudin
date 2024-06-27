@@ -13,40 +13,38 @@
                 class="ms-2 flex-grow-1"
                 title="Double click the text to edit or remove"
                 :class="completedClass"
+                @dblclick="$event => isEdit = true"
+                @focusout="$event => isEdit = false"
             >
-                <!-- <div class="relative">
-                    <input class="editable-tasks" type="text" />
-                </div> -->
-                <span>{{ task.name }}</span>
+                <div class="relative" v-if="isEdit">
+                    <input class="editable-tasks" type="text"
+                        @keyup.esc="$event => isEdit = false"
+                        v-focus
+                    />
+                </div>
+                <span v-else>{{ task.name }}</span>
             </div>
             <!--                                    <div class="tasks-date">24 Feb 12:00</div>-->
         </div>
-        <div class="task-actions">
-            <button
-                class="btn btn-sm btn-circle btn-outline-secondary me-1"
-            >
-                <IconPencil />
-            </button>
-            <button
-                class="btn btn-sm btn-circle btn-outline-danger"
-            >
-                <IconTrash />
-            </button>
-        </div>
+
+        <TaskActions @edit="$event => isEdit = true" v-show="!isEdit" />
     </li>
 </template>
 
 <script setup>
-import IconPencil from "../icons/IconPencil.vue";
-import IconTrash from "../icons/IconTrash.vue";
-import {computed} from "vue";
+import {computed, ref} from "vue";
+import TaskActions from "./TaskActions.vue";
 
 const props = defineProps({
     task: Object
 })
 
+const isEdit = ref(false)
 const completedClass = computed(() => props.task.is_completed ? "completed" : "")
 
+const vFocus = {
+    mounted: (el) => el.focus()
+}
 </script>
 
 <style scoped>
