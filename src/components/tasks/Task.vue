@@ -10,7 +10,7 @@
                 :checked="task.is_completed"
             />
             <div
-                class="ms-2 flex-grow-1 completed"
+                class="ms-2 flex-grow-1"
                 title="Double click the text to edit or remove"
                 :class="completedClass"
             >
