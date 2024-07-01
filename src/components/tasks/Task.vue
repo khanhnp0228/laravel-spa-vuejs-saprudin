@@ -14,12 +14,14 @@
                 title="Double click the text to edit or remove"
                 :class="completedClass"
                 @dblclick="$event => isEdit = true"
-                @focusout="$event => isEdit = false"
+                @focusout="undo"
             >
                 <div class="relative" v-if="isEdit">
                     <input class="editable-tasks" type="text"
-                        @keyup.esc="$event => isEdit = false" v-focus
+                        v-focus
+                        @keyup.esc="undo"
                         @keydown.enter="updateTask"
+                        v-model="editingTask"
                     />
                 </div>
                 <span v-else>{{ task.name }}</span>
@@ -42,10 +44,17 @@ const props = defineProps({
 const emit = defineEmits(['updated'])
 
 const isEdit = ref(false)
+const editingTask = ref(props.task.name)
+
 const completedClass = computed(() => props.task.is_completed ? "completed" : "")
 
 const vFocus = {
     mounted: (el) => el.focus()
+}
+
+const undo = () => {
+    isEdit.value = false
+    editingTask.value = props.task.name
 }
 
 const updateTask = event => {
