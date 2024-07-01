@@ -49,22 +49,12 @@ import { storeToRefs } from 'pinia';
 import { useTaskStore } from "../stores/task";
 
 
-const tasks = ref([])
-
 const store = useTaskStore()
-const { completedTasks, uncompletedTasks } = storeToRefs(store)
-
-/* Update store with $patch */
-// store.$patch({
-//     task: {
-//         name: "First task updated using $patch",
-//         is_completed: true
-//     }
-// })
+const { tasks, completedTasks, uncompletedTasks } = storeToRefs(store)
+const { fetchAllTasks } = store
 
 onMounted(async () => {
-    const {data} = await allTasks()
-    tasks.value = data.data
+    await fetchAllTasks()
 })
 
 // const uncompletedTasks = computed(() => tasks.value.filter(task => !task.is_completed))
