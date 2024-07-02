@@ -7,14 +7,22 @@
             <div class="form-floating mb-2">
                 <input type="email" name="" id="email" class="form-control" placeholder="name@example.com"
                     v-model="form.email"
+                    :class="{ 'is-invalid': errors.email && errors.email[0] }"
                 />
                 <label for="email">Email</label>
+                <div class="invalid-feedback" v-if="errors.email && errors.email[0]">
+                    {{ errors.email && errors.email[0] }}
+                </div>
             </div>
             <div class="form-floating mb-3">
                 <input type="password" name="" id="password" class="form-control" placeholder="Password"
                     v-model="form.password"
+                    :class="{ 'is-invalid': errors.password && errors.password[0] }"
                 />
                 <label for="password">Password</label>
+                <div class="invalid-feedback" v-if="errors.password && errors.password[0]">
+                    {{ errors.password && errors.password[0] }}
+                </div>
             </div>
 
             <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
@@ -26,9 +34,11 @@
 import { useRouter } from 'vue-router';
 import {reactive} from "vue";
 import {useAuthStore} from "../stores/auth";
+import {storeToRefs} from "pinia";
 
 const store = useAuthStore()
-const { user, handleLogin } = store
+const { isLoggedIn, errors } = storeToRefs(store)
+const { handleLogin } = store
 
 const router = useRouter()
 
@@ -39,7 +49,9 @@ const form = reactive({
 
 const handleSubmit = async () => {
     await handleLogin(form)
-    router.push({name: 'tasks'})
+    if (isLoggedIn.value){
+        router.push({name: 'tasks'})
+    }
 }
 </script>
 
