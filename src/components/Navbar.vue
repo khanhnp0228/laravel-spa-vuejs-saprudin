@@ -40,10 +40,17 @@
                     </template>
                     <template v-else>
                         <li class="nav-item">
-                            <a href="#" class="btn btn-outline-secondary ms-2"
-                               @click.prevent="logout"
-                            >Logout</a
-                            >
+
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ store.user.name }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" class="dropdown-item"
+                                       @click.prevent="logout"
+                                >Logout</a></li>
+                            </ul>
                         </li>
                     </template>
                 </ul>
