@@ -19,6 +19,7 @@ import DropdownTrigger from "../../dropdown/DropdownTrigger.vue";
 import {computed, onMounted, ref} from "vue";
 import { startOfWeek, endOfWeek, subWeeks, format } from 'date-fns';
 import FilterItem from "./FilterItem.vue";
+import {useRouter} from "vue-router";
 
 const filterItems = computed(() => {
     const thisWeekStart = format(startOfWeek(new Date()), 'd MMM')
@@ -39,9 +40,15 @@ const filterItems = computed(() => {
 
 const emit = defineEmits(['update'])
 
+const router = useRouter()
+
 const filter = (period) => {
     activeFilterKey.value = period
-    emit('update', activeFilter.value)
+    router.push({ name: 'summary', query: { period } })
+    emit('update', {
+        text: activeFilter.value,
+        period: activeFilterKey.value
+    })
 }
 
 onMounted(() => emit('update', activeFilter.value))
